@@ -1,0 +1,140 @@
+(base) rohanrayyadav@MacBook-Air adder % cat test/test1.snek
+(add1 (add1 (add1 5)))%                                                                                                                                              
+(base) rohanrayyadav@MacBook-Air adder % make test/test1.s
+cargo run -- test/test1.snek test/test1.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/adder test/test1.snek test/test1.s`
+(base) rohanrayyadav@MacBook-Air adder % make test/test1.run
+nasm -f macho64 test/test1.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc --target x86_64-apple-darwin -L runtime/ runtime/start.rs -o test/test1.run
+(base) rohanrayyadav@MacBook-Air adder % cat test/test1.s
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 5
+add rax, 1
+add rax, 1
+add rax, 1
+  ret
+(base) rohanrayyadav@MacBook-Air adder % ./test/test1.run
+8
+(base) rohanrayyadav@MacBook-Air adder % cat test/test2.snek
+(sub1 (sub1 (sub1 2)))%                                                                                                                                              
+(base) rohanrayyadav@MacBook-Air adder % make test/test2.s  
+cargo run -- test/test2.snek test/test2.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running `target/debug/adder test/test2.snek test/test2.s`
+(base) rohanrayyadav@MacBook-Air adder % make test/test2.run
+nasm -f macho64 test/test2.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc --target x86_64-apple-darwin -L runtime/ runtime/start.rs -o test/test2.run
+(base) rohanrayyadav@MacBook-Air adder % cat test/test2.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 2
+sub rax, 1
+sub rax, 1
+sub rax, 1
+  ret
+(base) rohanrayyadav@MacBook-Air adder % ./test/test2.run   
+-1
+(base) rohanrayyadav@MacBook-Air adder % cat test/test3.snek
+(add1 (sub1 (add1 -1)))%                                                                                                                                             
+(base) rohanrayyadav@MacBook-Air adder % make test/test3.s  
+cargo run -- test/test3.snek test/test3.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/adder test/test3.snek test/test3.s`
+(base) rohanrayyadav@MacBook-Air adder % make test/test3.run
+nasm -f macho64 test/test3.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc --target x86_64-apple-darwin -L runtime/ runtime/start.rs -o test/test3.run
+(base) rohanrayyadav@MacBook-Air adder % cat test/test3.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, -1
+add rax, 1
+sub rax, 1
+add rax, 1
+  ret
+(base) rohanrayyadav@MacBook-Air adder % ./test/test3.run   
+0
+(base) rohanrayyadav@MacBook-Air adder % cat test/test4.snek
+(negate (add1 5))%                                                                                                                                                   
+(base) rohanrayyadav@MacBook-Air adder % make test/test4.s  
+cargo run -- test/test4.snek test/test4.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running `target/debug/adder test/test4.snek test/test4.s`
+(base) rohanrayyadav@MacBook-Air adder % make test/test4.run
+nasm -f macho64 test/test4.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc --target x86_64-apple-darwin -L runtime/ runtime/start.rs -o test/test4.run
+(base) rohanrayyadav@MacBook-Air adder % cat test/test4.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 5
+add rax, 1
+neg rax
+  ret
+(base) rohanrayyadav@MacBook-Air adder % ./test/test4.run 
+-6
+(base) rohanrayyadav@MacBook-Air adder % cat test/test5.snek
+(negate (sub1 0))%                                                                                                                                                   
+(base) rohanrayyadav@MacBook-Air adder % make test/test5.s  
+cargo run -- test/test5.snek test/test5.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/adder test/test5.snek test/test5.s`
+(base) rohanrayyadav@MacBook-Air adder % make test/test5.run
+nasm -f macho64 test/test5.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc --target x86_64-apple-darwin -L runtime/ runtime/start.rs -o test/test5.run
+(base) rohanrayyadav@MacBook-Air adder % cat test/test5.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 0
+sub rax, 1
+neg rax
+  ret
+(base) rohanrayyadav@MacBook-Air adder % ./test/test5.run   
+1
+(base) rohanrayyadav@MacBook-Air adder % cat test/add.snek  
+(sub1 (sub1 (add1 73)))%                                                                                                                                             
+(base) rohanrayyadav@MacBook-Air adder % make test/add.s    
+cargo run -- test/add.snek test/add.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running `target/debug/adder test/add.snek test/add.s`
+(base) rohanrayyadav@MacBook-Air adder % make test/add.run
+nasm -f macho64 test/add.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc --target x86_64-apple-darwin -L runtime/ runtime/start.rs -o test/add.run
+(base) rohanrayyadav@MacBook-Air adder % cat test/add.s   
+
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 73
+add rax, 1
+sub rax, 1
+sub rax, 1
+  ret
+(base) rohanrayyadav@MacBook-Air adder % ./test/add.run   
+72
+(base) rohanrayyadav@MacBook-Air adder % cat test/error.snek
+(abc)%                                                                                                                                                               
+(base) rohanrayyadav@MacBook-Air adder % make test/error.s  
+cargo run -- test/error.snek test/error.s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
+     Running `target/debug/adder test/error.snek test/error.s`
+thread 'main' panicked at src/main.rs:64:22:
+parse error: Unrecognized list [abc]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+make: *** [test/error.s] Error 101
